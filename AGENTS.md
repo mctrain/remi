@@ -21,6 +21,7 @@ If your environment differs, check the DevEco Studio task list for the exact tar
 
 ## Agent-Specific Instructions
 - Do not mark checklist items as completed in `DEVELOPMENT_PLAN.md` until the user confirms the task is done.
+- Before marking any task complete, also create a git commit for the related changes.
 
 ## Coding Style & Naming Conventions
 - Indentation: 2 spaces in `.ets` files (see `entry/src/main/ets/pages/Index.ets`).
