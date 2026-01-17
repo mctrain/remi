@@ -17,26 +17,27 @@ This file tracks milestones, issues, and task-level checklists for Remi.
     - [x] UI: add tab uses plus icon (no text)
     - [x] UI: tab bar is bottom-positioned on phones
 - [ ] M0-2 Data model and RDB base
-  - [ ] `entry/src/main/ets/data/schema.ets`
-  - [ ] `entry/src/main/ets/data/db.ets`
-  - [ ] `entry/src/main/ets/data/repositories/*.ets`
+- [x] M0-2 Data model and RDB base
+  - [x] `entry/src/main/ets/data/schema.ets`
+  - [x] `entry/src/main/ets/data/db.ets`
+  - [x] `entry/src/main/ets/data/repositories/*.ets`
   - Tests:
-    - [ ] Unit: Visit CRUD
-    - [ ] Unit: Place-Visit relation query
-- [ ] M0-3 Permissions baseline
-  - [ ] `entry/src/main/ets/platform/permissions.ets`
-  - [ ] `entry/src/main/module.json5` permissions
+    - [x] Unit: Visit CRUD
+    - [x] Unit: Place-Visit relation query
+- [x] M0-3 Permissions baseline
+  - [x] `entry/src/main/ets/platform/permissions.ets`
+  - [x] `entry/src/main/module.json5` permissions
   - Tests:
-    - [ ] Manual: first Add opens permission prompt
-    - [ ] Unit: denied state returns error
+    - [x] Manual: first Add opens permission prompt
+    - [x] Unit: denied state returns error
 
 ## M1 - The Trace (Core Map and Footprints)
-- [ ] M1-1 Ripple map rendering
-  - [ ] `entry/src/main/ets/components/RippleMap.ets`
-  - [ ] `entry/src/main/ets/pages/Trace.ets`
+- [x] M1-1 Ripple map rendering
+  - [x] `entry/src/main/ets/components/RippleMap.ets`
+  - [x] `entry/src/main/ets/pages/Trace.ets`
   - Tests:
-    - [ ] UI: new visit shows ripple point
-    - [ ] UI: zoom keeps markers
+    - [x] UI: new visit shows ripple point
+    - [x] UI: zoom keeps markers
 - [ ] M1-2 Auto location + manual check-in
   - [ ] `entry/src/main/ets/services/location.ets`
   - [ ] `entry/src/main/ets/services/manualCheckin.ets`

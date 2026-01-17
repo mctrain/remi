@@ -1,16 +1,28 @@
 {
-  "string": [
-    {
-      "name": "module_desc",
-      "value": "module description"
-    },
-    {
-      "name": "EntryAbility_desc",
-      "value": "description"
-    },
-    {
-      "name": "EntryAbility_label",
-      "value": "迹忆"
-    }
-  ]
+    "string":  [
+                   {
+                       "name":  "module_desc",
+                       "value":  "module description"
+                   },
+                   {
+                       "name":  "EntryAbility_desc",
+                       "value":  "description"
+                   },
+                   {
+                       "name":  "EntryAbility_label",
+                       "value":  "迹忆"
+                   },
+                   {
+                       "value":  "Used to record visited locations.",
+                       "name":  "permission_location_reason"
+                   },
+                   {
+                       "value":  "Used to import photos for check-ins.",
+                       "name":  "permission_media_reason"
+                   },
+                   {
+                       "value":  "Used to record ambient audio.",
+                       "name":  "permission_microphone_reason"
+                   }
+               ]
 }
