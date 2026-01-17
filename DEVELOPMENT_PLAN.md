@@ -3,16 +3,19 @@
 This file tracks milestones, issues, and task-level checklists for Remi.
 
 ## M0 - Baseline and Architecture
-- [ ] M0-1 Navigation and page scaffolding (Index + 5 tabs)
-  - [ ] `entry/src/main/ets/pages/Index.ets` tab router shell
-  - [ ] `entry/src/main/ets/pages/Trace.ets` placeholder
-  - [ ] `entry/src/main/ets/pages/Experience.ets` placeholder
-  - [ ] `entry/src/main/ets/pages/Add.ets` placeholder
-  - [ ] `entry/src/main/ets/pages/Remi.ets` placeholder
-  - [ ] `entry/src/main/ets/pages/Profile.ets` placeholder
+- [x] M0-1 Navigation and page scaffolding (Index + 5 tabs)
+  - [x] `entry/src/main/ets/pages/Index.ets` tab router shell
+  - [x] `entry/src/main/ets/pages/Trace.ets` placeholder
+  - [x] `entry/src/main/ets/pages/Experience.ets` placeholder
+  - [x] `entry/src/main/ets/pages/Add.ets` placeholder
+  - [x] `entry/src/main/ets/pages/Remi.ets` placeholder
+  - [x] `entry/src/main/ets/pages/Profile.ets` placeholder
   - Tests:
-    - [ ] UI: default enters Trace
-    - [ ] UI: tab switching works
+    - [x] UI: default enters Trace
+    - [x] UI: tab switching works
+    - [x] UI: tab labels show "足迹 / 经历 / 回响 / 我的"
+    - [x] UI: add tab uses plus icon (no text)
+    - [x] UI: tab bar is bottom-positioned on phones
 - [ ] M0-2 Data model and RDB base
   - [ ] `entry/src/main/ets/data/schema.ets`
   - [ ] `entry/src/main/ets/data/db.ets`

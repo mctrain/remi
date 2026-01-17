@@ -19,6 +19,9 @@ If your environment differs, check the DevEco Studio task list for the exact tar
 - Target SDK: 6.0.1 with API level 21.
 - Keep new dependencies, APIs, and features compatible with SDK 6.0.1 / API 21 to avoid regressions.
 
+## Agent-Specific Instructions
+- Do not mark checklist items as completed in `DEVELOPMENT_PLAN.md` until the user confirms the task is done.
+
 ## Coding Style & Naming Conventions
 - Indentation: 2 spaces in `.ets` files (see `entry/src/main/ets/pages/Index.ets`).
 - Components/abilities use PascalCase (e.g., `Index`, `EntryAbility`).

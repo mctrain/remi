@@ -7,15 +7,34 @@ import { ProfilePage } from './Profile';
 @Entry
 @Component
 struct Index {
+  @State currentIndex: number = 0
+
   build() {
-    // TODO: replace with real tabs/router
-    Column() {
-      Text('Remi')
-      TracePage()
-      ExperiencePage()
-      AddPage()
-      RemiPage()
-      ProfilePage()
-    }
+    Tabs({
+      index: this.currentIndex,
+      barPosition: BarPosition.End
+    }) {
+      TabContent() {
+        TracePage()
+      }.tabBar({ text: '足迹' })
+
+      TabContent() {
+        ExperiencePage()
+      }.tabBar({ text: '经历' })
+
+      TabContent() {
+        AddPage()
+      }.tabBar({ icon: $r('app.media.add_plus') })
+
+      TabContent() {
+        RemiPage()
+      }.tabBar({ text: '回响' })
+
+      TabContent() {
+        ProfilePage()
+      }.tabBar({ text: '我的' })
+    }.onChange((index: number) => {
+      this.currentIndex = index
+    })
   }
 }

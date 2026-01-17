@@ -14,6 +14,11 @@ export interface Visit {
   note?: string;
 }
 
+export interface VisitWithPlace {
+  visit: Visit;
+  place: Place;
+}
+
 export interface MediaItem {
   id: string;
   visitId: string;
