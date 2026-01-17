@@ -15,6 +15,10 @@ This project uses Hvigor (via DevEco Studio or the `hvigor` CLI if installed).
 - Run tests: `hvigor test` (runs local tests; use module filters if needed).
 If your environment differs, check the DevEco Studio task list for the exact targets.
 
+## SDK/API Compatibility
+- Target SDK: 6.0.1 with API level 21.
+- Keep new dependencies, APIs, and features compatible with SDK 6.0.1 / API 21 to avoid regressions.
+
 ## Coding Style & Naming Conventions
 - Indentation: 2 spaces in `.ets` files (see `entry/src/main/ets/pages/Index.ets`).
 - Components/abilities use PascalCase (e.g., `Index`, `EntryAbility`).

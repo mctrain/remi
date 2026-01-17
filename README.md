@@ -67,7 +67,7 @@
 ### 环境要求
 
 * DevEco Studio Next Beta 及以上版本。
-* HarmonyOS Next SDK (API 12+)。
+* HarmonyOS Next SDK (API 21+)。
 
 ### 安装与运行
 
