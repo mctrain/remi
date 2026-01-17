@@ -1,6 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
+import { database } from '../data/db';
 
 const DOMAIN = 0x0000;
 
@@ -11,10 +12,16 @@ export default class EntryAbility extends UIAbility {
     } catch (err) {
       hilog.error(DOMAIN, 'testTag', 'Failed to set colorMode. Cause: %{public}s', JSON.stringify(err));
     }
+    database.open(this.context).catch((err: Error) => {
+      hilog.error(DOMAIN, 'testTag', 'Failed to open database. Cause: %{public}s', JSON.stringify(err));
+    });
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
   }
 
   onDestroy(): void {
+    database.close().catch((err: Error) => {
+      hilog.error(DOMAIN, 'testTag', 'Failed to close database. Cause: %{public}s', JSON.stringify(err));
+    });
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');
   }
 
