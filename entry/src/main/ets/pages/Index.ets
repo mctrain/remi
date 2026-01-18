@@ -3,6 +3,7 @@ import { ExperiencePage } from './Experience';
 import { AddPage } from './Add';
 import { RemiPage } from './Remi';
 import { ProfilePage } from './Profile';
+import { RemiColors, RemiSpacing } from '../common/ui/Tokens';
 
 @Entry
 @Component
@@ -14,45 +15,47 @@ struct Index {
     Column() {
       Divider()
         .strokeWidth(0.5)
-        .color('#22000000')
+        .color(RemiColors.Divider)
         .width('100%')
         .margin({ bottom: 4 })
       Image(this.currentIndex === index ? activeIcon : icon)
         .width(22)
         .height(22)
+        .fillColor(this.currentIndex === index ? RemiColors.Primary : RemiColors.TextSecondary)
       Text(label)
         .fontSize(10)
-        .fontColor(this.currentIndex === index ? '#111111' : '#8A8A8A')
+        .fontColor(this.currentIndex === index ? RemiColors.Primary : RemiColors.TextSecondary)
         .margin({ top: 2 })
     }
     .width('100%')
     .padding({ top: 6, bottom: 6 })
     .alignItems(HorizontalAlign.Center)
+    .backgroundColor(RemiColors.DeepBackground)
   }
 
   @Builder
   private tabBarTrace(): void {
-    this.tabBarItem(0, '足迹', $r('app.media.tab_trace'), $r('app.media.tab_trace_active'))
+    this.tabBarItem(0, 'Trace', $r('app.media.tab_trace'), $r('app.media.tab_trace_active'))
   }
 
   @Builder
   private tabBarExperience(): void {
-    this.tabBarItem(1, '经历', $r('app.media.tab_experience'), $r('app.media.tab_experience_active'))
+    this.tabBarItem(1, 'Journal', $r('app.media.tab_experience'), $r('app.media.tab_experience_active'))
   }
 
   @Builder
   private tabBarAdd(): void {
-    this.tabBarItem(2, '记录', $r('app.media.tab_add'), $r('app.media.tab_add_active'))
+    this.tabBarItem(2, 'Capture', $r('app.media.tab_add'), $r('app.media.tab_add_active'))
   }
 
   @Builder
   private tabBarRemi(): void {
-    this.tabBarItem(3, '回响', $r('app.media.tab_remi'), $r('app.media.tab_remi_active'))
+    this.tabBarItem(3, 'Echo', $r('app.media.tab_remi'), $r('app.media.tab_remi_active'))
   }
 
   @Builder
   private tabBarProfile(): void {
-    this.tabBarItem(4, '我的', $r('app.media.tab_profile'), $r('app.media.tab_profile_active'))
+    this.tabBarItem(4, 'Profile', $r('app.media.tab_profile'), $r('app.media.tab_profile_active'))
   }
 
   build() {

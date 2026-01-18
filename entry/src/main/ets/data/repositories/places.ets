@@ -3,7 +3,11 @@ import { database, Database } from '../db';
 import relationalStore from '@ohos.data.relationalStore';
 
 export class PlacesRepository {
-  constructor(private readonly db: Database = database) {}
+  private readonly db: Database
+
+  constructor(db: Database = database) {
+    this.db = db
+  }
 
   async upsert(place: Place): Promise<void> {
     const store = this.requireStore();

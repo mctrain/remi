@@ -1,4 +1,5 @@
 import { RippleMap } from '../components/RippleMap';
+import { RemiColors, RemiSpacing, RemiTypography } from '../common/ui/Tokens';
 
 @Component
 export struct TracePage {
@@ -7,23 +8,24 @@ export struct TracePage {
   build() {
     Column() {
       Row() {
-        Text('足迹')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium);
+        Text('Trace')
+          .fontSize(RemiTypography.H3) // Was 20
+          .fontWeight(FontWeight.Medium)
+          .fontColor(RemiColors.TextPrimary);
         Row() {
           Button('OpenStreetMap')
             .fontSize(12)
             .padding({ left: 10, right: 10, top: 6, bottom: 6 })
-            .backgroundColor(this.provider === 'osm' ? '#2B4A5F' : '#162531')
-            .fontColor('#E8F3FF')
+            .backgroundColor(this.provider === 'osm' ? RemiColors.SurfaceHighlight : RemiColors.Surface)
+            .fontColor(RemiColors.TextPrimary)
             .onClick(() => {
               this.provider = 'osm';
             });
           Button('Huawei Map')
             .fontSize(12)
             .padding({ left: 10, right: 10, top: 6, bottom: 6 })
-            .backgroundColor(this.provider === 'huawei' ? '#2B4A5F' : '#162531')
-            .fontColor('#E8F3FF')
+            .backgroundColor(this.provider === 'huawei' ? RemiColors.SurfaceHighlight : RemiColors.Surface)
+            .fontColor(RemiColors.TextPrimary)
             .margin({ left: 8 })
             .onClick(() => {
               this.provider = 'huawei';
@@ -41,6 +43,6 @@ export struct TracePage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#0F1C28');
+    .backgroundColor(RemiColors.DeepBackground);
   }
 }
