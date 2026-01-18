@@ -4,7 +4,7 @@ import type common from '@ohos.app.ability.common';
 const DB_NAME = 'remi.db';
 
 export class Database {
-  private store?: relationalStore.RdbStore;
+  protected store?: relationalStore.RdbStore;
 
   async open(context: common.UIAbilityContext): Promise<relationalStore.RdbStore> {
     if (this.store) {
@@ -31,7 +31,7 @@ export class Database {
     this.store = undefined;
   }
 
-  private async createTables(): Promise<void> {
+  protected async createTables(): Promise<void> {
     if (!this.store) {
       return;
     }

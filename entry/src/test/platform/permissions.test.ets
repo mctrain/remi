@@ -4,12 +4,13 @@ import { Permissions } from '../../main/ets/platform/permissions';
 
 describe('permissions', () => {
   it('returns false when permission is denied', 0, async () => {
-    const manager = {
-      async requestPermissionsFromUser() {
-        return { authResults: [1] };
+    class DenyManager {
+      async requestPermissionsFromUser(context: common.UIAbilityContext, permissions: string[]) {
+        return { authResults: [1] }
       }
-    };
-    const permissions = new Permissions(manager);
+    }
+
+    const permissions = new Permissions(new DenyManager());
     const context = {} as common.UIAbilityContext;
 
     const result = await permissions.requestLocation(context);

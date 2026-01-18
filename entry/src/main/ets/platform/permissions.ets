@@ -5,17 +5,21 @@ const LOCATION_PERMS = ['ohos.permission.LOCATION'];
 const MEDIA_PERMS = ['ohos.permission.READ_MEDIA'];
 const AUDIO_PERMS = ['ohos.permission.MICROPHONE'];
 
-type PermissionManager = {
-  requestPermissionsFromUser: (context: common.UIAbilityContext, permissions: string[]) => Promise<{
-    authResults: number[];
-  }>;
-};
+export interface PermissionResult {
+  authResults: number[];
+}
+
+export interface PermissionManager {
+  requestPermissionsFromUser(context: common.UIAbilityContext, permissions: string[]): Promise<PermissionResult>;
+}
 
 export class Permissions {
   private atManager: PermissionManager;
 
-  constructor(manager: PermissionManager = abilityAccessCtrl.createAtManager()) {
-    this.atManager = manager;
+  constructor(manager?: PermissionManager) {
+    // Avoid relying on AtManager type (it differs across SDKs and breaks ArkTS structural typing rules).
+    // If no manager is provided (production), use abilityAccessCtrl.createAtManager() but cast through unknown.
+    this.atManager = (manager ? manager : (abilityAccessCtrl.createAtManager() as unknown as PermissionManager));
   }
 
   async requestLocation(context: common.UIAbilityContext): Promise<boolean> {

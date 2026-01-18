@@ -1,4 +1,6 @@
 import { describe, it, expect } from '@ohos/hypium';
+import type common from '@ohos.app.ability.common';
+import type { Visit } from '../../main/ets/data/schema';
 import { VisitsRepository } from '../../main/ets/data/repositories/visits';
 import { PlacesRepository } from '../../main/ets/data/repositories/places';
 import { TestDatabase } from './fakes';
@@ -6,15 +8,16 @@ import { TestDatabase } from './fakes';
 describe('visits repository', () => {
   it('supports basic CRUD with a single visit', 0, async () => {
     const db = new TestDatabase();
+    await db.open({} as common.UIAbilityContext);
     const visitsRepo = new VisitsRepository(db);
-    const visit = { id: 'visit-1', placeId: 'place-1', visitedAt: 1000, note: 'first' };
+    const visit: Visit = { id: 'visit-1', placeId: 'place-1', visitedAt: 1000, note: 'first' };
 
     await visitsRepo.create(visit);
     let visits = await visitsRepo.getAll();
     expect(visits.length).assertEqual(1);
     expect(visits[0].note).assertEqual('first');
 
-    await visitsRepo.update({ ...visit, note: 'updated' });
+    await visitsRepo.update({ id: visit.id, placeId: visit.placeId, visitedAt: visit.visitedAt, note: 'updated' });
     visits = await visitsRepo.getAll();
     expect(visits[0].note).assertEqual('updated');
 
@@ -25,6 +28,7 @@ describe('visits repository', () => {
 
   it('returns visit with place relation', 0, async () => {
     const db = new TestDatabase();
+    await db.open({} as common.UIAbilityContext);
     const placesRepo = new PlacesRepository(db);
     const visitsRepo = new VisitsRepository(db);
 
