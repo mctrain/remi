@@ -12,7 +12,7 @@ export struct RemiPage {
         this.memory = memories.join('\n\n');
         this.hasMemory = true;
       } else {
-        this.memory = 'No echoes from the past found for today. Time to create new ones!';
+          this.memory = 'No echoes from the past found for today. Time to create new ones!';
         this.hasMemory = false;
       }
     });
@@ -22,7 +22,7 @@ export struct RemiPage {
     Column() {
       // Header
       Row() {
-        Text('Echo')
+        Text($r('app.string.remi_title'))
           .fontSize(RemiTypography.H1)
           .fontWeight(RemiTypography.WeightBold)
           .fontColor(RemiColors.TextPrimary)
@@ -59,7 +59,7 @@ export struct RemiPage {
         }
         .margin({ bottom: RemiSpacing.XLarge })
 
-        Text('Do you remember?')
+        Text($r('app.string.remi_prompt'))
           .fontSize(RemiTypography.H2)
           .fontWeight(RemiTypography.WeightMedium)
           .fontColor(RemiColors.TextPrimary)

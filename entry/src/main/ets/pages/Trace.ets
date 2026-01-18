@@ -8,12 +8,12 @@ export struct TracePage {
   build() {
     Column() {
       Row() {
-        Text('Trace')
+        Text($r('app.string.trace_title'))
           .fontSize(RemiTypography.H3) // Was 20
           .fontWeight(FontWeight.Medium)
           .fontColor(RemiColors.TextPrimary);
         Row() {
-          Button('OpenStreetMap')
+          Button($r('app.string.trace_provider_osm'))
             .fontSize(12)
             .padding({ left: 10, right: 10, top: 6, bottom: 6 })
             .backgroundColor(this.provider === 'osm' ? RemiColors.SurfaceHighlight : RemiColors.Surface)
@@ -21,7 +21,7 @@ export struct TracePage {
             .onClick(() => {
               this.provider = 'osm';
             });
-          Button('Huawei Map')
+          Button($r('app.string.trace_provider_huawei'))
             .fontSize(12)
             .padding({ left: 10, right: 10, top: 6, bottom: 6 })
             .backgroundColor(this.provider === 'huawei' ? RemiColors.SurfaceHighlight : RemiColors.Surface)

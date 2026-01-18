@@ -20,26 +20,30 @@ export class StatsService {
   }
 
   async getSummary(): Promise<StatsSummary> {
-    const [places, visits] = await Promise.all([
-      this.placesRepo.getAll(),
-      this.visitsRepo.getAll()
-    ])
+    const placesPromise = this.placesRepo.getAll()
+    const visitsPromise = this.visitsRepo.getAll()
 
-    const countries = new Set(
-      places
-        .map((place) => place.countryCode)
-        .filter((value): value is string => typeof value === 'string' && value.length > 0)
-    )
+    const places = await placesPromise
+    const visits = await visitsPromise
 
-    const cities = new Set(
-      places
-        .map((place) => place.city)
-        .filter((value): value is string => typeof value === 'string' && value.length > 0)
-    )
+    const countriesSet = new Set<string>()
+    const citiesSet = new Set<string>()
+
+    for (const place of places) {
+      const countryCode = place.countryCode
+      if (typeof countryCode === 'string' && countryCode.length > 0) {
+        countriesSet.add(countryCode)
+      }
+
+      const city = place.city
+      if (typeof city === 'string' && city.length > 0) {
+        citiesSet.add(city)
+      }
+    }
 
     return {
-      countries: countries.size,
-      cities: cities.size,
+      countries: countriesSet.size,
+      cities: citiesSet.size,
       visits: visits.length
     }
   }

@@ -16,7 +16,7 @@ export struct ExperiencePage {
     Column() {
       // Header
       Row() {
-        Text('Experiences')
+        Text($r('app.string.experience_title'))
           .fontSize(RemiTypography.H1)
           .fontWeight(RemiTypography.WeightBold)
           .fontColor(RemiColors.TextPrimary)

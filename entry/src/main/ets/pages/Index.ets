@@ -11,7 +11,7 @@ struct Index {
   @State currentIndex: number = 0
 
   @Builder
-  private tabBarItem(index: number, label: string, icon: Resource, activeIcon: Resource): void {
+  private tabBarItem(index: number, label: string | Resource, icon: Resource, activeIcon: Resource): void {
     Column() {
       Divider()
         .strokeWidth(0.5)
@@ -35,27 +35,27 @@ struct Index {
 
   @Builder
   private tabBarTrace(): void {
-    this.tabBarItem(0, 'Trace', $r('app.media.tab_trace'), $r('app.media.tab_trace_active'))
+    this.tabBarItem(0, $r('app.string.tab_trace'), $r('app.media.tab_trace'), $r('app.media.tab_trace_active'))
   }
 
   @Builder
   private tabBarExperience(): void {
-    this.tabBarItem(1, 'Journal', $r('app.media.tab_experience'), $r('app.media.tab_experience_active'))
+    this.tabBarItem(1, $r('app.string.tab_experience'), $r('app.media.tab_experience'), $r('app.media.tab_experience_active'))
   }
 
   @Builder
   private tabBarAdd(): void {
-    this.tabBarItem(2, 'Capture', $r('app.media.tab_add'), $r('app.media.tab_add_active'))
+    this.tabBarItem(2, $r('app.string.tab_add'), $r('app.media.tab_add'), $r('app.media.tab_add_active'))
   }
 
   @Builder
   private tabBarRemi(): void {
-    this.tabBarItem(3, 'Echo', $r('app.media.tab_remi'), $r('app.media.tab_remi_active'))
+    this.tabBarItem(3, $r('app.string.tab_remi'), $r('app.media.tab_remi'), $r('app.media.tab_remi_active'))
   }
 
   @Builder
   private tabBarProfile(): void {
-    this.tabBarItem(4, 'Profile', $r('app.media.tab_profile'), $r('app.media.tab_profile_active'))
+    this.tabBarItem(4, $r('app.string.tab_profile'), $r('app.media.tab_profile'), $r('app.media.tab_profile_active'))
   }
 
   build() {

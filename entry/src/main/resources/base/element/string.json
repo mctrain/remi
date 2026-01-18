@@ -1,28 +1,195 @@
 {
-    "string":  [
-                   {
-                       "name":  "module_desc",
-                       "value":  "module description"
-                   },
-                   {
-                       "name":  "EntryAbility_desc",
-                       "value":  "description"
-                   },
-                   {
-                       "name":  "EntryAbility_label",
-                       "value":  "迹忆"
-                   },
-                   {
-                       "value":  "Used to record visited locations.",
-                       "name":  "permission_location_reason"
-                   },
-                   {
-                       "value":  "Used to import photos for check-ins.",
-                       "name":  "permission_media_reason"
-                   },
-                   {
-                       "value":  "Used to record ambient audio.",
-                       "name":  "permission_microphone_reason"
-                   }
-               ]
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "迹忆"
+    },
+    {
+      "name": "permission_location_reason",
+      "value": "Used to record visited locations."
+    },
+    {
+      "name": "permission_media_reason",
+      "value": "Used to import photos for check-ins."
+    },
+    {
+      "name": "permission_microphone_reason",
+      "value": "Used to record ambient audio."
+    },
+
+    {
+      "name": "tab_trace",
+      "value": "Trace"
+    },
+    {
+      "name": "tab_experience",
+      "value": "Experiences"
+    },
+    {
+      "name": "tab_add",
+      "value": "Capture"
+    },
+    {
+      "name": "tab_remi",
+      "value": "Echo"
+    },
+    {
+      "name": "tab_profile",
+      "value": "Profile"
+    },
+
+    {
+      "name": "trace_title",
+      "value": "Trace"
+    },
+    {
+      "name": "trace_provider_osm",
+      "value": "OpenStreetMap"
+    },
+    {
+      "name": "trace_provider_huawei",
+      "value": "Huawei Map"
+    },
+
+    {
+      "name": "add_title",
+      "value": "New Memory"
+    },
+    {
+      "name": "add_auto_location_title",
+      "value": "Auto Location"
+    },
+    {
+      "name": "add_auto_location_subtitle",
+      "value": "Capture your current coordinates instantly."
+    },
+    {
+      "name": "add_use_current_location",
+      "value": "Use Current Location"
+    },
+    {
+      "name": "add_manual_entry_title",
+      "value": "Manual Entry"
+    },
+    {
+      "name": "add_placeholder_place_name",
+      "value": "Place name"
+    },
+    {
+      "name": "add_placeholder_lat",
+      "value": "Lat"
+    },
+    {
+      "name": "add_placeholder_lon",
+      "value": "Lon"
+    },
+    {
+      "name": "add_placeholder_note",
+      "value": "Add a note..."
+    },
+    {
+      "name": "add_save_checkin",
+      "value": "Save Check-in"
+    },
+
+    {
+      "name": "experience_title",
+      "value": "Experiences"
+    },
+    {
+      "name": "experience_location_prefix",
+      "value": "Loc: "
+    },
+    {
+      "name": "experience_unknown_country",
+      "value": "Unknown"
+    },
+
+    {
+      "name": "profile_name",
+      "value": "Voyager"
+    },
+    {
+      "name": "profile_tagline",
+      "value": "Where every mile becomes a memory"
+    },
+    {
+      "name": "profile_stat_countries",
+      "value": "Countries"
+    },
+    {
+      "name": "profile_stat_cities",
+      "value": "Cities"
+    },
+    {
+      "name": "profile_stat_echoes",
+      "value": "Echoes"
+    },
+    {
+      "name": "profile_menu_passport",
+      "value": "My Passport"
+    },
+    {
+      "name": "profile_menu_passport_sub",
+      "value": "View your travel badges"
+    },
+    {
+      "name": "profile_menu_sensory",
+      "value": "Sensory Database"
+    },
+    {
+      "name": "profile_menu_sensory_sub",
+      "value": "Manage audio & scent tags"
+    },
+    {
+      "name": "profile_menu_privacy",
+      "value": "Privacy & Data"
+    },
+    {
+      "name": "profile_menu_privacy_sub",
+      "value": "Local storage settings"
+    },
+    {
+      "name": "profile_menu_about",
+      "value": "About Remi"
+    },
+    {
+      "name": "profile_menu_about_sub",
+      "value": "v0.1.0 Beta"
+    },
+
+    {
+      "name": "remi_title",
+      "value": "Echo"
+    },
+    {
+      "name": "remi_prompt",
+      "value": "Do you remember?"
+    },
+    {
+      "name": "remi_loading",
+      "value": "Listening for echoes..."
+    },
+    {
+      "name": "remi_empty",
+      "value": "No echoes from the past found for today. Time to create new ones!"
+    },
+    {
+      "name": "remi_view_memory",
+      "value": "View Memory"
+    },
+    {
+      "name": "remi_start_journey",
+      "value": "Start Journey"
+    }
+  ]
 }
+

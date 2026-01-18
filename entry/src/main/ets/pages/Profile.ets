@@ -29,13 +29,13 @@ export struct ProfilePage {
         }
         .margin({ bottom: RemiSpacing.Medium })
 
-        Text('Voyager')
+        Text($r('app.string.profile_name'))
           .fontSize(RemiTypography.H2)
           .fontWeight(RemiTypography.WeightBold)
           .fontColor(RemiColors.TextPrimary)
           .margin({ bottom: RemiSpacing.XS })
 
-        Text('Where every mile becomes a memory')
+        Text($r('app.string.profile_tagline'))
           .fontSize(RemiTypography.Body)
           .fontColor(RemiColors.TextSecondary)
       }
@@ -45,11 +45,11 @@ export struct ProfilePage {
 
       // Stats Row
       Row() {
-        this.StatItem(this.stats.countries.toString(), 'Countries')
+        this.StatItem(this.stats.countries.toString(), $r('app.string.profile_stat_countries'))
         Divider().vertical(true).height(24).color(RemiColors.Divider)
-        this.StatItem(this.stats.cities.toString(), 'Cities')
+        this.StatItem(this.stats.cities.toString(), $r('app.string.profile_stat_cities'))
         Divider().vertical(true).height(24).color(RemiColors.Divider)
-        this.StatItem(this.stats.visits.toString(), 'Echoes')
+        this.StatItem(this.stats.visits.toString(), $r('app.string.profile_stat_echoes'))
       }
       .width('100%')
       .justifyContent(FlexAlign.SpaceEvenly)
@@ -58,22 +58,22 @@ export struct ProfilePage {
       // Settings / Menu List
       List() {
         ListItem() {
-          this.MenuItem('My Passport', 'View your travel badges')
+          this.MenuItem($r('app.string.profile_menu_passport'), $r('app.string.profile_menu_passport_sub'))
         }
         .margin({ bottom: RemiSpacing.Small })
 
         ListItem() {
-          this.MenuItem('Sensory Database', 'Manage audio & scent tags')
+          this.MenuItem($r('app.string.profile_menu_sensory'), $r('app.string.profile_menu_sensory_sub'))
         }
         .margin({ bottom: RemiSpacing.Small })
 
         ListItem() {
-          this.MenuItem('Privacy & Data', 'Local storage settings')
+          this.MenuItem($r('app.string.profile_menu_privacy'), $r('app.string.profile_menu_privacy_sub'))
         }
         .margin({ bottom: RemiSpacing.Small })
         
         ListItem() {
-           this.MenuItem('About Remi', 'v0.1.0 Beta')
+           this.MenuItem($r('app.string.profile_menu_about'), $r('app.string.profile_menu_about_sub'))
         }
       }
       .width('100%')
@@ -86,7 +86,7 @@ export struct ProfilePage {
   }
 
   @Builder
-  StatItem(value: string, label: string) {
+  StatItem(value: string, label: string | Resource) {
     Column() {
       Text(value)
         .fontSize(24)
@@ -100,7 +100,7 @@ export struct ProfilePage {
   }
 
   @Builder
-  MenuItem(title: string, subtitle: string) {
+  MenuItem(title: string | Resource, subtitle: string | Resource) {
     Row() {
       Column() {
         Text(title)

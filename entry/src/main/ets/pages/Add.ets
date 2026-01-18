@@ -37,7 +37,7 @@ export struct AddPage {
         note: this.noteInput
       })
       this.statusMessage = 'Saved current location.'
-    } catch {
+    } catch (err) {
       this.statusMessage = 'Failed to fetch location.'
     } finally {
       this.isSaving = false
@@ -72,7 +72,7 @@ export struct AddPage {
       this.latInput = ''
       this.lonInput = ''
       this.noteInput = ''
-    } catch {
+    } catch (err) {
       this.statusMessage = 'Failed to save check-in.'
     } finally {
       this.isSaving = false
@@ -81,7 +81,7 @@ export struct AddPage {
 
   build() {
     Column() {
-      Text('New Memory')
+      Text($r('app.string.add_title'))
         .fontSize(RemiTypography.H1)
         .fontWeight(FontWeight.Bold)
         .fontColor(RemiColors.TextPrimary)
@@ -94,7 +94,7 @@ export struct AddPage {
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .fontColor(RemiColors.Primary)
-          Text('Auto Location')
+          Text($r('app.string.add_auto_location_title'))
             .fontSize(RemiTypography.Body)
             .fontWeight(FontWeight.Medium)
             .fontColor(RemiColors.TextPrimary)
@@ -103,12 +103,12 @@ export struct AddPage {
         .width('100%')
         .margin({ bottom: RemiSpacing.Small })
 
-        Text('Capture your current coordinates instantly.')
+        Text($r('app.string.add_auto_location_subtitle'))
           .fontSize(RemiTypography.Caption)
           .fontColor(RemiColors.TextSecondary)
           .margin({ bottom: RemiSpacing.Medium })
         
-        Button('Use Current Location')
+        Button($r('app.string.add_use_current_location'))
           .onClick(async () => {
             await this.handleAutoCheckin()
           })
@@ -124,7 +124,7 @@ export struct AddPage {
       .margin({ bottom: RemiSpacing.Large })
 
       // Manual Entry Section
-      Text('Manual Entry')
+      Text($r('app.string.add_manual_entry_title'))
         .fontSize(RemiTypography.H3)
         .fontWeight(FontWeight.Bold)
         .fontColor(RemiColors.TextPrimary)
@@ -164,7 +164,7 @@ export struct AddPage {
       .width('100%')
       .margin({ bottom: RemiSpacing.Small })
 
-      TextInput({ text: this.noteInput, placeholder: 'Add a note...' })
+       TextInput({ text: this.noteInput, placeholder: 'Add a note...' })
         .onChange((value: string) => { this.noteInput = value })
         .placeholderColor(RemiColors.TextSecondary)
         .fontColor(RemiColors.TextPrimary)
@@ -173,7 +173,7 @@ export struct AddPage {
         .height(48)
         .margin({ bottom: RemiSpacing.Large })
 
-      Button('Save Check-in')
+      Button($r('app.string.add_save_checkin'))
         .onClick(async () => {
           await this.handleManualCheckin()
         })
