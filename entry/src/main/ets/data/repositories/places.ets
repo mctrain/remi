@@ -1,6 +1,7 @@
 import type { Place } from '../schema';
 import { database, Database } from '../db';
 import relationalStore from '@ohos.data.relationalStore';
+import { Predicates, type ResultSet, type Store } from '../rdbTypes'
 
 export class PlacesRepository {
   private readonly db: Database
@@ -21,8 +22,8 @@ export class PlacesRepository {
       lon: place.lon
     };
     if (existing) {
-      const predicates = new relationalStore.RdbPredicates('places').equalTo('id', place.id);
-      await store.update(values, predicates);
+      const predicates = new Predicates('places').equalTo('id', place.id)
+      await store.update('places', values, predicates);
       return;
     }
     await store.insert('places', values);
@@ -30,7 +31,7 @@ export class PlacesRepository {
 
   async getById(id: string): Promise<Place | undefined> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('places').equalTo('id', id);
+    const predicates = new Predicates('places').equalTo('id', id)
     const resultSet = await store.query(predicates);
     try {
       if (resultSet.rowCount === 0) {
@@ -45,7 +46,7 @@ export class PlacesRepository {
 
   async getAll(): Promise<Place[]> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('places');
+    const predicates = new Predicates('places')
     const resultSet = await store.query(predicates);
     const places: Place[] = [];
     try {
@@ -64,11 +65,11 @@ export class PlacesRepository {
 
   async remove(id: string): Promise<void> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('places').equalTo('id', id);
-    await store.delete(predicates);
+    const predicates = new Predicates('places').equalTo('id', id)
+    await store.delete('places', predicates);
   }
 
-  private mapPlace(resultSet: relationalStore.ResultSet): Place {
+  private mapPlace(resultSet: ResultSet): Place {
     return {
       id: resultSet.getString(resultSet.getColumnIndex('id')),
       name: resultSet.getString(resultSet.getColumnIndex('name')),
@@ -79,7 +80,7 @@ export class PlacesRepository {
     };
   }
 
-  private readOptionalString(resultSet: relationalStore.ResultSet, column: string): string | undefined {
+  private readOptionalString(resultSet: ResultSet, column: string): string | undefined {
     const index = resultSet.getColumnIndex(column);
     if (resultSet.isColumnNull(index)) {
       return undefined;
@@ -87,8 +88,8 @@ export class PlacesRepository {
     return resultSet.getString(index);
   }
 
-  private requireStore(): relationalStore.RdbStore {
-    const store = this.db.getStore();
+  private requireStore(): Store {
+    const store = this.db.getStoreWrapper();
     if (!store) {
       throw new Error('Database not opened. Call database.open(context) first.');
     }

@@ -1,14 +1,15 @@
 import relationalStore from '@ohos.data.relationalStore';
 import type common from '@ohos.app.ability.common';
+import { SystemStore, type Store } from './rdbTypes'
 
 const DB_NAME = 'remi.db';
 
 export class Database {
   protected store?: relationalStore.RdbStore;
 
-  async open(context: common.UIAbilityContext): Promise<relationalStore.RdbStore> {
+  async open(context: common.UIAbilityContext): Promise<void> {
     if (this.store) {
-      return this.store;
+      return;
     }
     const config: relationalStore.StoreConfig = {
       name: DB_NAME,
@@ -16,11 +17,13 @@ export class Database {
     };
     this.store = await relationalStore.getRdbStore(context, config);
     await this.createTables();
-    return this.store;
   }
 
-  getStore(): relationalStore.RdbStore | undefined {
-    return this.store;
+  getStoreWrapper(): Store | undefined {
+    if (!this.store) {
+      return undefined
+    }
+    return new SystemStore(this.store)
   }
 
   async close(): Promise<void> {

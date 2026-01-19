@@ -1,6 +1,7 @@
 import type { MediaItem } from '../schema';
 import { database, Database } from '../db';
 import relationalStore from '@ohos.data.relationalStore';
+import { Predicates, type ResultSet, type Store } from '../rdbTypes'
 
 export class MediaRepository {
   constructor(private readonly db: Database = database) {}
@@ -18,7 +19,7 @@ export class MediaRepository {
 
   async getByVisit(visitId: string): Promise<MediaItem[]> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('media').equalTo('visitId', visitId);
+    const predicates = new Predicates('media').equalTo('visitId', visitId)
     const resultSet = await store.query(predicates);
     const items: MediaItem[] = [];
     try {
@@ -37,11 +38,11 @@ export class MediaRepository {
 
   async remove(id: string): Promise<void> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('media').equalTo('id', id);
-    await store.delete(predicates);
+    const predicates = new Predicates('media').equalTo('id', id)
+    await store.delete('media', predicates);
   }
 
-  private mapItem(resultSet: relationalStore.ResultSet): MediaItem {
+  private mapItem(resultSet: ResultSet): MediaItem {
     return {
       id: resultSet.getString(resultSet.getColumnIndex('id')),
       visitId: resultSet.getString(resultSet.getColumnIndex('visitId')),
@@ -50,8 +51,8 @@ export class MediaRepository {
     };
   }
 
-  private requireStore(): relationalStore.RdbStore {
-    const store = this.db.getStore();
+  private requireStore(): Store {
+    const store = this.db.getStoreWrapper();
     if (!store) {
       throw new Error('Database not opened. Call database.open(context) first.');
     }

@@ -7,7 +7,6 @@ import { VisitsRepository } from '../../main/ets/data/repositories/visits';
 describe('stats service', () => {
   it('returns counts derived from repositories', 0, async () => {
     const db = new TestDatabase();
-    await db.open({} as common.UIAbilityContext);
     const placesRepo = new PlacesRepository(db);
     const visitsRepo = new VisitsRepository(db);
     const stats = new StatsService(placesRepo, visitsRepo);

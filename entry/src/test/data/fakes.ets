@@ -1,6 +1,7 @@
-import relationalStore from '@ohos.data.relationalStore'
 import type common from '@ohos.app.ability.common'
+import relationalStore from '@ohos.data.relationalStore'
 import { Database } from '../../main/ets/data/db'
+import { Predicates, type ResultSet, type Store } from '../../main/ets/data/rdbTypes'
 
 type RowValue = string | number | null
 
@@ -39,7 +40,7 @@ class FakeRow {
   }
 }
 
-class FakeResultSet implements relationalStore.ResultSet {
+class FakeResultSet implements ResultSet {
   rowCount: number
   private rows: FakeRow[]
   private columns: string[]
@@ -102,22 +103,13 @@ class FakeResultSet implements relationalStore.ResultSet {
   close(): void {}
 }
 
-class FakeRdbStore implements relationalStore.RdbStore {
+class FakeStore implements Store {
   private places: FakeRow[] = []
   private visits: FakeRow[] = []
 
-  private getTable(table: string): FakeRow[] {
-    if (table === 'places') {
-      return this.places
-    }
-    if (table === 'visits') {
-      return this.visits
-    }
-    return []
-  }
-
   async insert(table: string, values: relationalStore.ValuesBucket): Promise<number> {
     const row = new FakeRow()
+
     if (table === 'places') {
       row.set('id', values['id'] as string)
       row.set('name', values['name'] as string)
@@ -125,63 +117,110 @@ class FakeRdbStore implements relationalStore.RdbStore {
       row.set('city', (values['city'] as string) ?? null)
       row.set('lat', values['lat'] as number)
       row.set('lon', values['lon'] as number)
-    } else if (table === 'visits') {
+      this.places.push(row)
+      return 1
+    }
+
+    if (table === 'visits') {
       row.set('id', values['id'] as string)
       row.set('placeId', values['placeId'] as string)
       row.set('visitedAt', values['visitedAt'] as number)
       row.set('note', (values['note'] as string) ?? null)
+      this.visits.push(row)
+      return 1
     }
-    this.getTable(table).push(row)
-    return 1
+
+    return 0
   }
 
-  async update(values: relationalStore.ValuesBucket, predicates?: relationalStore.RdbPredicates): Promise<number> {
-    const rows = this.resolveRows(predicates)
-    // This fake updates all rows in the selected table.
-    for (const row of rows) {
-      for (const key in values) {
-        const value = values[key] as RowValue
-        row.set(key, value)
+  async update(table: string, values: relationalStore.ValuesBucket, predicates?: Predicates): Promise<number> {
+    const rows = this.resolveRows(table)
+
+    if (table === 'visits') {
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i]
+        if (values['placeId'] !== undefined) {
+          row.set('placeId', values['placeId'] as string)
+        }
+        if (values['visitedAt'] !== undefined) {
+          row.set('visitedAt', values['visitedAt'] as number)
+        }
+        if (values['note'] !== undefined) {
+          row.set('note', (values['note'] as string) ?? null)
+        }
       }
+      return rows.length
     }
-    return rows.length
+
+    if (table === 'places') {
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i]
+        if (values['name'] !== undefined) {
+          row.set('name', values['name'] as string)
+        }
+        if (values['countryCode'] !== undefined) {
+          row.set('countryCode', (values['countryCode'] as string) ?? null)
+        }
+        if (values['city'] !== undefined) {
+          row.set('city', (values['city'] as string) ?? null)
+        }
+        if (values['lat'] !== undefined) {
+          row.set('lat', values['lat'] as number)
+        }
+        if (values['lon'] !== undefined) {
+          row.set('lon', values['lon'] as number)
+        }
+      }
+      return rows.length
+    }
+
+    return 0
   }
 
-  async delete(predicates?: relationalStore.RdbPredicates): Promise<number> {
-    const rows = this.resolveRows(predicates)
+  async delete(table: string, predicates?: Predicates): Promise<number> {
+    const rows = this.resolveRows(table)
     const removed = rows.length
-    // This fake deletes all rows in the selected table.
-    for (const row of rows) {
-      // no-op: cleared below
+
+    if (removed === 0) {
+      return 0
     }
-    const tableName = this.getTableName(predicates)
-    if (tableName === 'places') {
+
+    if (table === 'places') {
       this.places = []
-    } else if (tableName === 'visits') {
-      this.visits = []
+      return removed
     }
-    return removed
+
+    if (table === 'visits') {
+      this.visits = []
+      return removed
+    }
+
+    return 0
   }
 
-  async query(predicates: relationalStore.RdbPredicates): Promise<relationalStore.ResultSet> {
-    const rows = this.resolveRows(predicates)
+  async query(predicates: Predicates): Promise<ResultSet> {
+    const rows = this.resolveRows(predicates.table)
     const clones: FakeRow[] = []
-    for (const row of rows) {
-      clones.push(row.clone())
+    for (let i = 0; i < rows.length; i++) {
+      clones.push(rows[i].clone())
     }
     return new FakeResultSet(clones)
   }
 
-  async querySql(sql: string): Promise<relationalStore.ResultSet> {
+  async querySql(sql: string): Promise<ResultSet> {
     if (sql.indexOf('FROM visits INNER JOIN places') < 0) {
       return new FakeResultSet([])
     }
 
-    const outRows: FakeRow[] = []
-    for (const visit of this.visits) {
+    const out: FakeRow[] = []
+
+    for (let visitIndex = 0; visitIndex < this.visits.length; visitIndex++) {
+      const visit = this.visits[visitIndex]
       const visitPlaceId = visit.get('placeId')
+
       let foundPlace: FakeRow | null = null
-      for (const place of this.places) {
+      for (let placeIndex = 0; placeIndex < this.places.length; placeIndex++) {
+        const place = this.places[placeIndex]
         if (place.get('id') === visitPlaceId) {
           foundPlace = place
           break
@@ -204,43 +243,37 @@ class FakeRdbStore implements relationalStore.RdbStore {
       row.set('place_lat', foundPlace.get('lat'))
       row.set('place_lon', foundPlace.get('lon'))
 
-      outRows.push(row)
+      out.push(row)
     }
 
-    return new FakeResultSet(outRows)
+    return new FakeResultSet(out)
   }
 
-  private resolveRows(predicates?: relationalStore.RdbPredicates): FakeRow[] {
-    const tableName = this.getTableName(predicates)
-    if (tableName.length === 0) {
-      return []
+  private resolveRows(table: string): FakeRow[] {
+    if (table === 'places') {
+      return this.places
     }
-    return this.getTable(tableName)
-  }
-
-  private getTableName(predicates?: relationalStore.RdbPredicates): string {
-    if (!predicates) {
-      return ''
+    if (table === 'visits') {
+      return this.visits
     }
-    // RdbPredicates in OHOS exposes tableName.
-    return predicates.tableName
+    return []
   }
 }
 
 export class TestDatabase extends Database {
-  private readonly fakeStore: relationalStore.RdbStore
+  private readonly storeImpl: Store
 
   constructor() {
     super()
-    this.fakeStore = new FakeRdbStore()
+    this.storeImpl = new FakeStore()
   }
 
-  async open(context: common.UIAbilityContext): Promise<relationalStore.RdbStore> {
-    this.store = this.fakeStore
-    return this.fakeStore
+  async open(context: common.UIAbilityContext): Promise<void> {
+    // Not used by tests; repositories use getStoreWrapper().
+    throw new Error('TestDatabase.open is not supported in unit tests')
   }
 
-  async close(): Promise<void> {
-    this.store = undefined
+  getStoreWrapper(): Store | undefined {
+    return this.storeImpl
   }
 }

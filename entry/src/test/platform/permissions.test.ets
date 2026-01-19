@@ -1,17 +1,19 @@
 import { describe, it, expect } from '@ohos/hypium';
-import type common from '@ohos.app.ability.common';
-import { Permissions } from '../../main/ets/platform/permissions';
+import type { Context, Permissions as AbilityPermission } from '@ohos.abilityAccessCtrl';
+import { PermissionManager, PermissionResult, Permissions } from '../../main/ets/platform/permissions';
 
 describe('permissions', () => {
   it('returns false when permission is denied', 0, async () => {
-    class DenyManager {
-      async requestPermissionsFromUser(context: common.UIAbilityContext, permissions: string[]) {
-        return { authResults: [1] }
+    class DenyManager extends PermissionManager {
+      async requestPermissionsFromUser(context: Context, permissions: AbilityPermission[]): Promise<PermissionResult> {
+        return new PermissionResult([1])
       }
     }
 
+
     const permissions = new Permissions(new DenyManager());
-    const context = {} as common.UIAbilityContext;
+    class FakeContext {}
+    const context = new FakeContext() as Context;
 
     const result = await permissions.requestLocation(context);
     expect(result).assertEqual(false);

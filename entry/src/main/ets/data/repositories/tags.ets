@@ -1,6 +1,7 @@
 import type { SensoryTag } from '../schema';
 import { database, Database } from '../db';
 import relationalStore from '@ohos.data.relationalStore';
+import { Predicates, type ResultSet, type Store } from '../rdbTypes'
 
 export class TagsRepository {
   constructor(private readonly db: Database = database) {}
@@ -14,8 +15,9 @@ export class TagsRepository {
       category: tag.category
     };
     if (existing) {
-      const predicates = new relationalStore.RdbPredicates('tags').equalTo('id', tag.id);
-      await store.update(values, predicates);
+       const predicates = new Predicates('tags').equalTo('id', tag.id)
+       await store.update('tags', values, predicates);
+
       return;
     }
     await store.insert('tags', values);
@@ -23,7 +25,7 @@ export class TagsRepository {
 
   async getById(id: string): Promise<SensoryTag | undefined> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('tags').equalTo('id', id);
+    const predicates = new Predicates('tags').equalTo('id', id)
     const resultSet = await store.query(predicates);
     try {
       if (resultSet.rowCount === 0) {
@@ -38,7 +40,7 @@ export class TagsRepository {
 
   async getAll(): Promise<SensoryTag[]> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('tags');
+    const predicates = new Predicates('tags')
     const resultSet = await store.query(predicates);
     const tags: SensoryTag[] = [];
     try {
@@ -57,7 +59,7 @@ export class TagsRepository {
 
   async listByCategory(category: SensoryTag['category']): Promise<SensoryTag[]> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('tags').equalTo('category', category);
+    const predicates = new Predicates('tags').equalTo('category', category)
     const resultSet = await store.query(predicates);
     const tags: SensoryTag[] = [];
     try {
@@ -76,11 +78,11 @@ export class TagsRepository {
 
   async remove(id: string): Promise<void> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('tags').equalTo('id', id);
-    await store.delete(predicates);
+    const predicates = new Predicates('tags').equalTo('id', id)
+    await store.delete('tags', predicates);
   }
 
-  private mapTag(resultSet: relationalStore.ResultSet): SensoryTag {
+  private mapTag(resultSet: ResultSet): SensoryTag {
     return {
       id: resultSet.getString(resultSet.getColumnIndex('id')),
       label: resultSet.getString(resultSet.getColumnIndex('label')),
@@ -88,8 +90,8 @@ export class TagsRepository {
     };
   }
 
-  private requireStore(): relationalStore.RdbStore {
-    const store = this.db.getStore();
+  private requireStore(): Store {
+    const store = this.db.getStoreWrapper();
     if (!store) {
       throw new Error('Database not opened. Call database.open(context) first.');
     }

@@ -7,7 +7,6 @@ import { VisitsRepository } from '../../main/ets/data/repositories/visits';
 describe('echo service', () => {
   it('returns visits that match month/day of provided date', 0, async () => {
     const db = new TestDatabase();
-    await db.open({} as common.UIAbilityContext);
     const placesRepo = new PlacesRepository(db);
     const visitsRepo = new VisitsRepository(db);
     const echo = new EchoService(visitsRepo);

@@ -1,6 +1,7 @@
 import type { Achievement } from '../schema';
 import { database, Database } from '../db';
 import relationalStore from '@ohos.data.relationalStore';
+import { Predicates, type ResultSet, type Store } from '../rdbTypes'
 
 export class AchievementsRepository {
   constructor(private readonly db: Database = database) {}
@@ -14,8 +15,9 @@ export class AchievementsRepository {
       unlockedAt: achievement.unlockedAt ?? null
     };
     if (existing) {
-      const predicates = new relationalStore.RdbPredicates('achievements').equalTo('id', achievement.id);
-      await store.update(values, predicates);
+       const predicates = new Predicates('achievements').equalTo('id', achievement.id)
+       await store.update('achievements', values, predicates);
+
       return;
     }
     await store.insert('achievements', values);
@@ -23,7 +25,7 @@ export class AchievementsRepository {
 
   async getById(id: string): Promise<Achievement | undefined> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('achievements').equalTo('id', id);
+    const predicates = new Predicates('achievements').equalTo('id', id)
     const resultSet = await store.query(predicates);
     try {
       if (resultSet.rowCount === 0) {
@@ -38,7 +40,7 @@ export class AchievementsRepository {
 
   async getAll(): Promise<Achievement[]> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('achievements');
+    const predicates = new Predicates('achievements')
     const resultSet = await store.query(predicates);
     const achievements: Achievement[] = [];
     try {
@@ -57,11 +59,11 @@ export class AchievementsRepository {
 
   async remove(id: string): Promise<void> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('achievements').equalTo('id', id);
-    await store.delete(predicates);
+    const predicates = new Predicates('achievements').equalTo('id', id)
+    await store.delete('achievements', predicates);
   }
 
-  private mapAchievement(resultSet: relationalStore.ResultSet): Achievement {
+  private mapAchievement(resultSet: ResultSet): Achievement {
     return {
       id: resultSet.getString(resultSet.getColumnIndex('id')),
       name: resultSet.getString(resultSet.getColumnIndex('name')),
@@ -69,7 +71,7 @@ export class AchievementsRepository {
     };
   }
 
-  private readOptionalLong(resultSet: relationalStore.ResultSet, column: string): number | undefined {
+  private readOptionalLong(resultSet: ResultSet, column: string): number | undefined {
     const index = resultSet.getColumnIndex(column);
     if (resultSet.isColumnNull(index)) {
       return undefined;
@@ -77,8 +79,8 @@ export class AchievementsRepository {
     return resultSet.getLong(index);
   }
 
-  private requireStore(): relationalStore.RdbStore {
-    const store = this.db.getStore();
+  private requireStore(): Store {
+    const store = this.db.getStoreWrapper();
     if (!store) {
       throw new Error('Database not opened. Call database.open(context) first.');
     }

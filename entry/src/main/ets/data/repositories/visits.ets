@@ -1,6 +1,7 @@
 import type { Visit, VisitWithPlace, Place } from '../schema';
 import { database, Database } from '../db';
 import relationalStore from '@ohos.data.relationalStore';
+import { Predicates, type ResultSet, type Store } from '../rdbTypes'
 
 export class VisitsRepository {
   private readonly db: Database
@@ -27,13 +28,13 @@ export class VisitsRepository {
       visitedAt: visit.visitedAt,
       note: visit.note ?? null
     };
-    const predicates = new relationalStore.RdbPredicates('visits').equalTo('id', visit.id);
-    await store.update(values, predicates);
+    const predicates = new Predicates('visits').equalTo('id', visit.id)
+    await store.update('visits', values, predicates);
   }
 
   async getById(id: string): Promise<Visit | undefined> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('visits').equalTo('id', id);
+    const predicates = new Predicates('visits').equalTo('id', id)
     const resultSet = await store.query(predicates);
     try {
       if (resultSet.rowCount === 0) {
@@ -48,7 +49,7 @@ export class VisitsRepository {
 
   async getAll(): Promise<Visit[]> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('visits');
+    const predicates = new Predicates('visits')
     const resultSet = await store.query(predicates);
     const visits: Visit[] = [];
     try {
@@ -67,7 +68,7 @@ export class VisitsRepository {
 
   async getByPlace(placeId: string): Promise<Visit[]> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('visits').equalTo('placeId', placeId);
+    const predicates = new Predicates('visits').equalTo('placeId', placeId)
     const resultSet = await store.query(predicates);
     const visits: Visit[] = [];
     try {
@@ -86,8 +87,8 @@ export class VisitsRepository {
 
   async remove(id: string): Promise<void> {
     const store = this.requireStore();
-    const predicates = new relationalStore.RdbPredicates('visits').equalTo('id', id);
-    await store.delete(predicates);
+    const predicates = new Predicates('visits').equalTo('id', id)
+    await store.delete('visits', predicates);
   }
 
   async listWithPlaces(): Promise<VisitWithPlace[]> {
@@ -127,7 +128,7 @@ export class VisitsRepository {
     }
   }
 
-  private mapVisit(resultSet: relationalStore.ResultSet): Visit {
+  private mapVisit(resultSet: ResultSet): Visit {
     return {
       id: resultSet.getString(resultSet.getColumnIndex('id')),
       placeId: resultSet.getString(resultSet.getColumnIndex('placeId')),
@@ -136,7 +137,7 @@ export class VisitsRepository {
     };
   }
 
-  private readOptionalString(resultSet: relationalStore.ResultSet, column: string): string | undefined {
+  private readOptionalString(resultSet: ResultSet, column: string): string | undefined {
     const index = resultSet.getColumnIndex(column);
     if (resultSet.isColumnNull(index)) {
       return undefined;
@@ -144,8 +145,8 @@ export class VisitsRepository {
     return resultSet.getString(index);
   }
 
-  private requireStore(): relationalStore.RdbStore {
-    const store = this.db.getStore();
+  private requireStore(): Store {
+    const store = this.db.getStoreWrapper();
     if (!store) {
       throw new Error('Database not opened. Call database.open(context) first.');
     }
